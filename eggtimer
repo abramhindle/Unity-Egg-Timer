@@ -92,6 +92,7 @@ class EggTimerIndicator:
             ("+30 seconds", self.plus_30_seconds),
             ("+1 minute", self.plus_one_minute),
             ("+5 minute", self.plus_five_minutes),
+            ("+1 hour", self.plus_one_hour),
             ("Reset Timer to 0", self.reset_timer_to_zero),
             ("Quit", self.quit)]
         for item in menu_items:
@@ -126,6 +127,8 @@ class EggTimerIndicator:
         self.eggtimer.add_total(60)
     def plus_five_minutes(self, widget):
         self.eggtimer.add_total(5*60)
+    def plus_one_hour(self, widget):
+        self.eggtimer.add_total(60*60)
     def reset_timer_to_zero(self, widget):
         self.eggtimer.zero()
     def notify(self, eggtimer):
