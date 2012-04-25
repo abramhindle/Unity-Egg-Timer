@@ -86,34 +86,19 @@ class EggTimerIndicator:
     def menu_setup(self):
         self.menu = gtk.Menu()
         self.menu_items = [];
-        self.start_timer_item = gtk.MenuItem("Start Timer")
-        self.start_timer_item.connect("activate", self.start_timer)
-        self.start_timer_item.show()
-	self.menu_items.append(self.start_timer_item)
-        self.stop_timer_item = gtk.MenuItem("Stop Timer")
-        self.stop_timer_item.connect("activate", self.stop_timer)
-        self.stop_timer_item.show()
-	self.menu_items.append(self.stop_timer_item)
-        self.plus_30_seconds_item = gtk.MenuItem("30 seconds")
-        self.plus_30_seconds_item.connect("activate", self.plus_30_seconds)
-        self.plus_30_seconds_item.show()
-	self.menu_items.append(self.plus_30_seconds_item)
-        self.plus_one_minute_item = gtk.MenuItem("+1 minute")
-        self.plus_one_minute_item.connect("activate", self.plus_one_minute)
-        self.plus_one_minute_item.show()
-	self.menu_items.append(self.plus_one_minute_item)
-        self.plus_five_minutes_item = gtk.MenuItem("+5 minutes")
-        self.plus_five_minutes_item.connect("activate", self.plus_five_minutes)
-        self.plus_five_minutes_item.show()
-	self.menu_items.append(self.plus_five_minutes_item)
-        self.reset_timer_item = gtk.MenuItem("Reset Timer to 0")
-        self.reset_timer_item.connect("activate", self.reset_timer_to_zero)
-        self.reset_timer_item.show()
-	self.menu_items.append(self.reset_timer_item)
-        self.quit_item = gtk.MenuItem("Quit")
-        self.quit_item.connect("activate", self.quit)
-        self.quit_item.show()
-	self.menu_items.append(self.quit_item)
+        menu_items = [
+            ("Start Timer",self.start_timer),
+            ("Stop Timer", self.stop_timer),
+            ("+30 seconds", self.plus_30_seconds),
+            ("+1 minute", self.plus_one_minute),
+            ("+5 minute", self.plus_five_minutes),
+            ("Reset Timer to 0", self.reset_timer_to_zero),
+            ("Quit", self.quit)]
+        for item in menu_items:
+            gtkitem = gtk.MenuItem(item[0])
+            gtkitem.connect("activate", item[1])
+            gtkitem.show()
+            self.menu_items.append( gtkitem )
 
     def main(self):
         self.update_label()
