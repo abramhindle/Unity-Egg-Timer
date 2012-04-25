@@ -1,0 +1,162 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
+import sys
+import gtk
+import appindicator
+import datetime
+import os
+import subprocess
+import time
+import gobject
+
+### BEGIN LICENSE
+# Egg timer (stolen from Shritesh Bhattarai's Nepali Date Indicator)
+# Copyright (C) 2012 Abram Hindle abram.hindle@softwareprocess.es
+# Copyright (C) 2011 Shritesh Bhattarai shriteshb@gmail.com
+# This program is free software: you can redistribute it and/or modify it 
+# under the terms of the GNU General Public License version 3, as published 
+# by the Free Software Foundation.
+# 
+# This program is distributed in the hope that it will be useful, but 
+# WITHOUT ANY WARRANTY; without even the implied warranties of 
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+# PURPOSE.  See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along 
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+### END LICENSE
+
+def gtktimeout(self, *args):
+    #if we're not running, don't schedule the timer!
+    return self.handle_timeout(*args)
+
+class EggTimer:
+    def __init__(self, notifier):
+        self.total = 0
+        self.current = 0
+        self.start_time = 0
+        self.notifier = notifier
+
+    def notify(self):
+        self.notifier.notify(self)
+
+    def add_total(self, n):
+        self.total += n
+        self.notify()
+
+    def zero(self):
+        self.total = 0
+        self.current = 0
+        self.notify()
+
+    def stop(self):
+        self.current = 0
+        self.start_time = 0
+        self.notify()
+ 
+    def start(self):
+        self.current = self.total
+        self.start_time = time.time()
+        self.notify()
+
+    def running(self):
+        return (self.current > 0 and self.total > 0)
+
+    def update(self):
+        ourtime = time.time()
+        oldcurrent = self.current
+        self.current = max( 0, self.total - (ourtime - self.start_time) )
+        if (self.current < 1):
+           self.notifier.alarm()
+           self.stop()
+        else:
+           self.notify()
+
+class EggTimerIndicator:
+    def __init__(self):
+        self.indicator = appindicator.Indicator("egg-timer-indicator",
+                                           "",
+                                           appindicator.CATEGORY_OTHER)
+        self.indicator.set_status(appindicator.STATUS_ACTIVE)
+        self.menu_setup()
+        self.indicator.set_menu(self.menu)
+        self.eggtimer = EggTimer(self)
+
+    def menu_setup(self):
+        self.menu = gtk.Menu()
+        self.menu_items = [];
+        self.start_timer_item = gtk.MenuItem("Start Timer")
+        self.start_timer_item.connect("activate", self.start_timer)
+        self.start_timer_item.show()
+	self.menu_items.append(self.start_timer_item)
+        self.stop_timer_item = gtk.MenuItem("Stop Timer")
+        self.stop_timer_item.connect("activate", self.stop_timer)
+        self.stop_timer_item.show()
+	self.menu_items.append(self.stop_timer_item)
+        self.plus_30_seconds_item = gtk.MenuItem("30 seconds")
+        self.plus_30_seconds_item.connect("activate", self.plus_30_seconds)
+        self.plus_30_seconds_item.show()
+	self.menu_items.append(self.plus_30_seconds_item)
+        self.plus_one_minute_item = gtk.MenuItem("+1 minute")
+        self.plus_one_minute_item.connect("activate", self.plus_one_minute)
+        self.plus_one_minute_item.show()
+	self.menu_items.append(self.plus_one_minute_item)
+        self.plus_five_minutes_item = gtk.MenuItem("+5 minutes")
+        self.plus_five_minutes_item.connect("activate", self.plus_five_minutes)
+        self.plus_five_minutes_item.show()
+	self.menu_items.append(self.plus_five_minutes_item)
+        self.reset_timer_item = gtk.MenuItem("Reset Timer to 0")
+        self.reset_timer_item.connect("activate", self.reset_timer_to_zero)
+        self.reset_timer_item.show()
+	self.menu_items.append(self.reset_timer_item)
+        self.quit_item = gtk.MenuItem("Quit")
+        self.quit_item.connect("activate", self.quit)
+        self.quit_item.show()
+	self.menu_items.append(self.quit_item)
+
+    def main(self):
+        self.update_label()
+	for item in self.menu_items:
+		self.menu.append( item )
+        gtk.main()
+
+    def update_label(self):
+        self.indicator.set_label(str(int(self.eggtimer.current))+"/"+str(self.eggtimer.total)+" by egg")
+
+    def quit(self, widget):
+        sys.exit(0)
+    
+    def start_timer(self, widget):
+        #if we're already running don't schedule another timeout
+        if (not self.eggtimer.running()):
+            gobject.timeout_add(1000, gtktimeout, self)
+        self.eggtimer.start()
+
+    def stop_timer(self, widget):
+        self.eggtimer.stop()
+    def plus_30_seconds(self, widget):
+        self.eggtimer.add_total(30)
+    def plus_one_minute(self, widget):
+        self.eggtimer.add_total(60)
+    def plus_five_minutes(self, widget):
+        self.eggtimer.add_total(5*60)
+    def reset_timer_to_zero(self, widget):
+        self.eggtimer.zero()
+    def notify(self, eggtimer):
+        self.update_label()
+
+    def handle_timeout(self, *args):
+        self.eggtimer.update()
+        #if we're not running, don't schedule the timer!
+        run = self.eggtimer.running()
+        return run
+
+    def alarm(self):
+        dialog = gtk.MessageDialog()
+        dialog.set_markup('''Time's up!''')
+        dialog.show()
+
+if __name__ == "__main__":
+    indicator = EggTimerIndicator()
+    indicator.main()
