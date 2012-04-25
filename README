@@ -1,0 +1,24 @@
+== Unity Egg Timer ==
+
+Why doesn't Unity have any tea timers or egg timers? Gnome-panel had a great timer applet but with 12.04 I had no luck.
+
+I don't know :(
+
+This was easy enough to write.
+
+Currently it lets you maintain a single timer, you can add 30 seconds, 1 minute or 5 minutes to it
+and then it counts down per second unless finally it notifies you that time is up.
+
+This is version 0
+
+Future work:
+* Run an application
+* Remember favorite times
+* Icons
+
+
+License: GPL 3.0
+Language: Python
+Copyrights:
+  Copyright (C) 2012 Abram Hindle abram.hindle@softwareprocess.es
+  Copyright (C) 2011 Shritesh Bhattarai shriteshb@gmail.com
