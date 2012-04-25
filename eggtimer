@@ -13,6 +13,7 @@ import gobject
 ### BEGIN LICENSE
 # Egg timer (stolen from Shritesh Bhattarai's Nepali Date Indicator)
 # Copyright (C) 2012 Abram Hindle abram.hindle@softwareprocess.es
+# Copyright (C) 2012 Bill Traynor
 # Copyright (C) 2011 Shritesh Bhattarai shriteshb@gmail.com
 # This program is free software: you can redistribute it and/or modify it 
 # under the terms of the GNU General Public License version 3, as published 
