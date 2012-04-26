@@ -35,9 +35,10 @@ This ~/.eggtimerrc is what I use:
 
 
 Future work:
-* Run an application
-* Remember favorite times
-* Icons
+* [X] Run an application
+* [X] Remember favorite times
+* [ ] Add a UI to maintain favorite times
+* [ ] Icons
 
 Screenshot:
 
