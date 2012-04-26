@@ -1,0 +1,31 @@
+[
+	{
+		"name"    : "3 Second Test",
+		"time"    : 3,
+		"action"  : "run",
+		"command" : "~/scripts/warn.sh 3 second test"
+	},
+	{
+		"name"    : "3 Second Test (alarm)",
+		"time"    : 3,
+		"action"  : "alarm"
+	},
+	{
+		"name"    : "3 Second Test Both",
+		"time"    : 3,
+		"action"  : "both",
+		"command" : "~/scripts/warn.sh 3 second test"
+	},
+	{
+		"name"    : "Boil Water",
+		"time"    : 180,
+		"action"  : "run",
+		"command" : "~/scripts/warn.sh Water\\'s Ready"
+	},
+	{
+		"name"    : "Steep Tea",
+		"time"    : 120,
+		"action"  : "run",
+		"command" : "~/scripts/warn.sh Tea\\'s Ready"
+	}
+]
