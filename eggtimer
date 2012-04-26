@@ -107,7 +107,7 @@ class CustomAlarmEvent(CustomTimeEvent):
         super(CustomAlarmEvent, self).__init__(jsonobj)
     def alarm(self):
         dialog = gtk.MessageDialog()
-        dialog.set_markup('''Time's up!''')
+        dialog.set_markup(self.name + ''' Time's up!''')
         dialog.show()
 
 class CustomRunEvent(CustomTimeEvent):
