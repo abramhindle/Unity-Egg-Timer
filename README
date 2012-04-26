@@ -9,7 +9,30 @@ This was easy enough to write.
 Currently it lets you maintain a single timer, you can add 30 seconds, 1 minute or 5 minutes to it
 and then it counts down per second unless finally it notifies you that time is up.
 
-This is version 0
+This is version 1
+
+=== your ~/.eggtimerrc
+
+The example eggtimerrc is written in json, feel free to define your own custom macros
+actions are: "alarm", "run" or "both". "alarm" shows a dialog box, "run" runs the "command" and "both" runs the command shows the dialog box
+
+This ~/.eggtimerrc is what I use:
+[
+	{
+		"name"    : "Boil Water",
+		"time"    : 180,
+		"action"  : "run",
+		"command" : "~/scripts/warn.sh Water\\'s Ready"
+	},
+	{
+		"name"    : "Steep Tea",
+		"time"    : 120,
+		"action"  : "run",
+		"command" : "~/scripts/warn.sh Tea\\'s Ready"
+	}
+]
+
+
 
 Future work:
 * Run an application
